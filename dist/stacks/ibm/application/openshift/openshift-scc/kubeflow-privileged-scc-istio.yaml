@@ -1,0 +1,44 @@
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  annotations:
+    kubernetes.io/description: kubeflow-anyuid provides all features of the restricted SCC
+      but allows users to run with any UID and any GID.
+  name: kubeflow-privileged-istio
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+allowedCapabilities: null
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups:
+- system:cluster-admins
+priority: 10
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- MKNOD
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users:
+# Allowing all serviceaccounts in kubeflow to run any uid per istio 1.9 documentation for openshift https://istio.io/latest/docs/setup/platform-setup/openshift/
+- system:serviceaccount:istio-system:cluster-local-gateway-service-account
+- system:serviceaccount:istio-system:istio-ingressgateway-service-account
+- system:serviceaccount:istio-system:istio-reader-service-account
+- system:serviceaccount:istio-system:istiod-service-account
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+- hostPath

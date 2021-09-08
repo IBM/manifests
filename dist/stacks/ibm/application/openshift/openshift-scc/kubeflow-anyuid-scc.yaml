@@ -1,0 +1,63 @@
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  annotations:
+    kubernetes.io/description: kubeflow-anyuid provides all features of the restricted SCC
+      but allows users to run with any UID and any GID.
+  name: kubeflow-anyuid-$(NAMESPACE)
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+allowedCapabilities: null
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups:
+- system:cluster-admins
+priority: 10
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- MKNOD
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users:
+#Metadata DB accesses files owned by root
+- system:serviceaccount:$(NAMESPACE):metadatadb
+#Minio accesses files owned by root
+- system:serviceaccount:$(NAMESPACE):minio
+#Katib injects container into pods which does not run as non-root user, trying to find Dockerfile for that image and fix it
+#- system:serviceaccount:kubeflow:default
+- system:serviceaccount:$(NAMESPACE):default
+- system:serviceaccount:$(NAMESPACE):kubeflow-pipelines-cache
+- system:serviceaccount:$(NAMESPACE):kubeflow-pipelines-cache-deployer-sa
+- system:serviceaccount:$(NAMESPACE):metadata-grpc-server
+- system:serviceaccount:$(NAMESPACE):kubeflow-pipelines-metadata-writer
+- system:serviceaccount:$(NAMESPACE):ml-pipeline
+- system:serviceaccount:$(NAMESPACE):ml-pipeline-persistenceagent
+- system:serviceaccount:$(NAMESPACE):ml-pipeline-scheduledworkflow
+- system:serviceaccount:$(NAMESPACE):ml-pipeline-ui
+- system:serviceaccount:$(NAMESPACE):ml-pipeline-viewer-crd-service-account
+- system:serviceaccount:$(NAMESPACE):ml-pipeline-visualizationserver
+- system:serviceaccount:$(NAMESPACE):mysql
+- system:serviceaccount:$(NAMESPACE):pytorch-operator
+- system:serviceaccount:$(NAMESPACE):tensorboard-controller
+- system:serviceaccount:$(NAMESPACE):xgboost-operator-service-account
+# for kfserving
+- system:serviceaccount:$(NAMESPACE):kfserving
+# for admission-webhook
+- system:serviceaccount:$(NAMESPACE):admission-webhook-service-account
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
