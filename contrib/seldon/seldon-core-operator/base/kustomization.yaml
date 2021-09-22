@@ -2,7 +2,6 @@
 # and emits as a YAML string
 resources:
 - resources.yaml
-- kubeflow-edit-seldon.yaml
 
 configurations:
   - kustomizeconfig.yaml
