@@ -7,3 +7,5 @@ configMapGenerator:
   - params.env
   name: centraldashboard-parameters
   behavior: merge
+patchesStrategicMerge:
+- iks-config.yaml
