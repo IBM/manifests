@@ -1,4 +1,4 @@
-# Kubeflow Manifests
+# Kubeflow on IKS(IBM Cloud Kubernetes Service)
 
 ## Table of Contents
 
@@ -18,7 +18,20 @@
 
 ## Overview
 
-This repo is owned by the [Manifests Working Group](https://github.com/kubeflow/community/blob/master/wg-manifests/charter.md).
+This is a fork from [Kubeflow Manifests](https://github.com/kubeflow/manifests) repository.
+This fork contains specific overlays on top of the original repository to deploy the Kubeflow on
+[IBM Cloud Kubernetes Service(IKS)](https://www.ibm.com/cloud/kubernetes-service). You can install Kubeflow on IKS in two different modes:
+- Single user:
+  it provides a single user account to log into Kubeflow. You use this account to perform all operations. The kustomization file used for
+  this deployment is under [iks-single](./iks-single) directory.
+- Multi-tenant:
+  it integrates with [AppID service](https://www.ibm.com/cloud/app-id) to handle user authentication. This deployment approach allows
+  you to use different users to log into Kubeflow and provides user-level isolation. Each user operates on his/her namespace.
+  The kustomization file used for this deployment is under [iks-multi](./iks-multi) directory.
+
+Detailed instructions for the two installations are [here](https://www.kubeflow.org/docs/distributions/ibm/deploy/install-kubeflow-on-iks/).
+## The following information is from original repository:
+
 If you are a contributor authoring or editing the packages please see [Best Practices](./docs/KustomizeBestPractices.md).
 
 The Kubeflow Manifests repository is organized under three (3) main directories, which include manifests for installing:
