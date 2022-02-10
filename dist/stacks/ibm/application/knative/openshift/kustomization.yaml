@@ -5,4 +5,3 @@ resources:
 - ../../../../../../common/knative/knative-serving-install/base
 - ../../../../../../common/knative/knative-eventing-crds/base
 - ../../../../../../common/knative/knative-eventing-install/base
-
