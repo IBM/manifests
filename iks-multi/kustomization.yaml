@@ -4,10 +4,10 @@ resources:
 # Cert-Manager (required)
 - ../dist/stacks/ibm/application/cert-manager
 # Istio (requires)
-- ../dist/stacks/ibm/application/istio-1-9-0
+- ../dist/stacks/ibm/application/istio-1-11
 # OIDC Authservice (required)
 - ../dist/stacks/ibm/application/oidc-authservice-appid
-# KNative
+# Knative
 - ../dist/stacks/ibm/application/knative
 # Kubeflow namespace (required)
 - ../dist/stacks/ibm/application/kubeflow-namespace
@@ -17,8 +17,8 @@ resources:
 - ../dist/stacks/ibm/application/kubeflow-istio-resources
 # Kubeflow Pipelines Tekton
 - ../dist/stacks/ibm/application/kfp-tekton
-# KFServing
-- ../dist/stacks/ibm/application/kfserving
+# KServe
+- ../dist/stacks/ibm/application/kserve
 # Katib
 - ../dist/stacks/ibm/application/katib
 # Central Dashboard (required)
@@ -34,10 +34,8 @@ resources:
 # Volumes Web App
 - ../dist/stacks/ibm/application/volumes-web-app/insecure
 # Tensorboards Web App
--  ../dist/stacks/ibm/application/tensorboard-controller
-# Tensorboard Controller
 -  ../dist/stacks/ibm/application/tensorboard-web-app/insecure
+# Tensorboard Controller
+-  ../dist/stacks/ibm/application/tensorboard-controller
 # Training Operator
 - ../dist/stacks/ibm/application/training-operator
-# MPI Operator
-- ../dist/stacks/ibm/application/mpi-job

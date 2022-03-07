@@ -9,7 +9,7 @@ spec:
       kind: Application
   descriptor:
     type: kubeflow
-    version: v1.4.0
+    version: v1.5.0
     description: Kubeflow on IBM Cloud Kubernetes Service
     maintainers:
     - name: Tommy Li
