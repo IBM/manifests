@@ -52,8 +52,13 @@ users:
 - system:serviceaccount:$(NAMESPACE):xgboost-operator-service-account
 # for kfserving
 - system:serviceaccount:$(NAMESPACE):kfserving
+# for kserve
+- system:serviceaccount:$(NAMESPACE):kserve
 # for admission-webhook
 - system:serviceaccount:$(NAMESPACE):admission-webhook-service-account
+# for mlx
+- system:serviceaccount:$(NAMESPACE):mlx-api
+- system:serviceaccount:$(NAMESPACE):mlx-ui
 volumes:
 - configMap
 - downwardAPI

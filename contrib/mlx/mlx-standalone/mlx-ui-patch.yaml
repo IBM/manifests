@@ -1,0 +1,30 @@
+# Copyright 2021 The MLX Contributors
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlx-ui
+  namespace: kubeflow
+  labels:
+    service: mlx-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: mlx-ui
+  template:
+    metadata:
+      name: mlx-ui
+      labels:
+        service: mlx-ui
+    spec:
+      containers:
+      - name: mlx-ui
+        # You can use your own webapp image below
+        image: mlexchange/mlx-ui:nightly-origin-main
+        imagePullPolicy: Always
+        env:
+        - name: REACT_APP_KFP_STANDALONE
+          value: "true"
