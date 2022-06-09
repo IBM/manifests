@@ -415,81 +415,6 @@ rules:
     resources: ["volumeattachments"]
     verbs: ["get", "list", "watch", "update","create"]
 ---
-# Source: dlf-chart/charts/csi-sidecars-rbac/templates/attacher-rbac.yaml
-# Attacher must be able to work with PVs, CSINodes and VolumeAttachments
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: external-attacher-runner
-  labels:
-    app.kubernetes.io/name: "dlf"
-rules:
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "update", "patch"] #Adding "update"
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update", "patch", "create"]  #Adding "update"
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments/status"]
-    verbs: ["patch"]
-#Secret permission is optional.
-#Enable it if you need value from secret.
-#For example, you have key `csi.storage.k8s.io/controller-publish-secret-name` in StorageClass.parameters
-#see https://kubernetes-csi.github.io/docs/secrets-and-credentials.html
-#  - apiGroups: [""]
-#    resources: ["secrets"]
-#    verbs: ["get", "list"]
----
-# Source: dlf-chart/charts/csi-sidecars-rbac/templates/provisioner-rbac.yaml
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: external-provisioner-runner
-  labels:
-    app.kubernetes.io/name: "dlf"
-  namespace: dlf
-rules:
-  # The following rule should be uncommented for plugins that require secrets
-  # for provisioning. #Enabling secrets
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "delete"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["storageclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["list", "watch", "create", "update", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshots"]
-    verbs: ["get", "list"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents"]
-    verbs: ["get", "list"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get", "list", "watch"]
-  # Access to volumeattachments is only needed when the CSI driver
-  # has the PUBLISH_UNPUBLISH_VOLUME controller capability.
-  # In that case, external-provisioner will watch volumeattachments
-  # to determine when it is safe to delete a volume.
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch","create"]
----
 # Source: dlf-chart/charts/dataset-operator-chart/templates/rbac/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -678,41 +603,6 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: csi-s3
-  apiGroup: rbac.authorization.k8s.io
----
-# Source: dlf-chart/charts/csi-sidecars-rbac/templates/attacher-rbac.yaml
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: csi-attacher-role
-  labels:
-    app.kubernetes.io/name: "dlf"
-subjects:
-  - kind: ServiceAccount
-    name: csi-attacher
-    # replace with non-default namespace name
-    namespace: dlf
-roleRef:
-  kind: ClusterRole
-  name: external-attacher-runner
-  apiGroup: rbac.authorization.k8s.io
----
-# Source: dlf-chart/charts/csi-sidecars-rbac/templates/provisioner-rbac.yaml
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: csi-provisioner-role
-  labels:
-    app.kubernetes.io/name: "dlf"
-  namespace: dlf
-subjects:
-  - kind: ServiceAccount
-    name: csi-provisioner
-    # replace with non-default namespace name
-    namespace: dlf
-roleRef:
-  kind: ClusterRole
-  name: external-provisioner-runner
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: dlf-chart/charts/dataset-operator-chart/templates/rbac/role_binding.yaml
@@ -1432,15 +1322,6 @@ spec:
             path: /var/data/kubelet/plugins/csi-s3
             type: DirectoryOrCreate
           name: socket-dir
----
-# Source: dlf-chart/charts/csi-s3-chart/templates/driver.yaml
-apiVersion: storage.k8s.io/v1
-kind: CSIDriver
-metadata:
-  name: ch.ctrox.csi.s3-driver
-spec:
-  attachRequired: false
-  podInfoOnMount: false
 ---
 # Source: dlf-chart/charts/dataset-operator-chart/templates/apps/webhook-definition.yaml
 apiVersion: admissionregistration.k8s.io/v1
