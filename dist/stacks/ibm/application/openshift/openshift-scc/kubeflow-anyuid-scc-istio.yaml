@@ -29,12 +29,13 @@ seLinuxContext:
 supplementalGroups:
   type: RunAsAny
 users:
-# Allowing all serviceaccounts in kubeflow to run any uid per istio 1.9 documentation for openshift https://istio.io/latest/docs/setup/platform-setup/openshift/
+# Allowing all serviceaccounts in kubeflow to run any uid per istio 1.11 documentation for openshift https://istio.io/latest/docs/setup/platform-setup/openshift/
 - system:serviceaccount:istio-system:oidc-authservice-service-account
 - system:serviceaccount:istio-system:cluster-local-gateway-service-account
 - system:serviceaccount:istio-system:istio-ingressgateway-service-account
 - system:serviceaccount:istio-system:istio-reader-service-account
 - system:serviceaccount:istio-system:istiod-service-account
+- system:serviceaccount:istio-system:istiod
 volumes:
 - configMap
 - downwardAPI

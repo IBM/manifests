@@ -77,7 +77,6 @@ spec:
           - key: admin.json
             path: admin.json
           secretName: mlx-dashboard-admin
-      volumes:
       - name: build-volume
         emptyDir: {}
       serviceAccountName: mlx-ui
