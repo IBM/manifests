@@ -8,6 +8,7 @@ resources:
 - kubeflow-anyuid-scc-knative.yaml
 - kubeflow-privileged-scc.yaml
 - tekton-anyuid-scc.yaml
+- kubeflow-anyuid-scc-datashim.yaml
 vars:
   - name: NAMESPACE
     objref:

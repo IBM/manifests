@@ -50,7 +50,6 @@ users:
 - system:serviceaccount:$(NAMESPACE):pytorch-operator
 - system:serviceaccount:$(NAMESPACE):tensorboard-controller
 - system:serviceaccount:$(NAMESPACE):xgboost-operator-service-account
-- system:serviceaccount:$(NAMESPACE):kfp-csi-s3
 # for kfserving
 - system:serviceaccount:$(NAMESPACE):kfserving
 # for kserve
@@ -60,10 +59,6 @@ users:
 # for mlx
 - system:serviceaccount:$(NAMESPACE):mlx-api
 - system:serviceaccount:$(NAMESPACE):mlx-ui
-- system:serviceaccount:dlf:csi-provisioner
-- system:serviceaccount:dlf:csi-nodeplugin
-- system:serviceaccount:dlf:csi-attacher
-- system:serviceaccount:dlf:csi-s3
 volumes:
 - configMap
 - downwardAPI
