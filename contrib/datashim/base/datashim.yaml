@@ -811,7 +811,7 @@ spec:
           args:
             - --v=5
             - --csi-address=/plugin/csi.sock
-            - --kubelet-registration-path=/var/data/kubelet/plugins/csi-h3/csi.sock
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/csi-h3/csi.sock
           env:
             - name: KUBE_NODE_NAME
               valueFrom:
@@ -848,19 +848,19 @@ spec:
             - name: plugin-dir
               mountPath: /plugin
             - name: pods-mount-dir
-              mountPath: /var/data/kubelet/pods
+              mountPath: /var/lib/kubelet/pods
               mountPropagation: "Bidirectional"
       volumes:
         - name: plugin-dir
           hostPath:
-            path: /var/data/kubelet/plugins/csi-h3
+            path: /var/lib/kubelet/plugins/csi-h3
             type: DirectoryOrCreate
         - name: pods-mount-dir
           hostPath:
-            path: /var/data/kubelet/pods
+            path: /var/lib/kubelet/pods
             type: Directory
         - hostPath:
-            path: /var/data/kubelet/plugins_registry
+            path: /var/lib/kubelet/plugins_registry
             type: DirectoryOrCreate
           name: registration-dir
 ---
@@ -888,7 +888,7 @@ spec:
       hostNetwork: true
       containers:
         - name: node-driver-registrar
-          image: "quay.io/k8scsi/csi-node-driver-registrar:v1.2.0"
+          image: "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0"
           lifecycle:
             preStop:
               exec:
@@ -966,7 +966,7 @@ spec:
       serviceAccountName: csi-s3
       containers:
         - name: driver-registrar
-          image: "quay.io/k8scsi/csi-node-driver-registrar:v1.2.0"
+          image: "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0"
           imagePullPolicy: Always
           args:
             - --v=5
@@ -1207,7 +1207,7 @@ spec:
       serviceAccountName: csi-attacher-nfs
       containers:
         - name: csi-attacher
-          image: "quay.io/k8scsi/csi-attacher:v2.2.0"
+          image: "k8s.gcr.io/sig-storage/csi-attacher:v3.3.0"
           args:
             - "--v=10"
             - "--csi-address=$(ADDRESS)"
@@ -1261,7 +1261,7 @@ spec:
       serviceAccountName: csi-attacher
       containers:
         - name: csi-attacher
-          image: "quay.io/k8scsi/csi-attacher:v2.2.0"
+          image: "k8s.gcr.io/sig-storage/csi-attacher:v3.3.0"
           imagePullPolicy: Always
           args:
             - --v=5
@@ -1303,7 +1303,7 @@ spec:
       serviceAccountName: csi-provisioner
       containers:
         - name: csi-provisioner
-          image: "quay.io/k8scsi/csi-provisioner:v2.0.2"
+          image: "k8s.gcr.io/sig-storage/csi-provisioner:v2.2.2"
           imagePullPolicy: Always
           args:
             - -v=5
