@@ -3,5 +3,4 @@ kind: Kustomization
 resources:
   - ../../../../../apps/kfp-tekton/upstream/env/platform-agnostic-multi-user
   - ../../../../../apps/pipeline/upstream/third-party/application/cluster-scoped
-  - ../../../../../apps/kfp-tekton/upstream/third-party/kfp-csi-s3
   - application.yaml
