@@ -69,6 +69,8 @@ spec:
           readOnly: true
         - mountPath: /workspace/build
           name: build-volume
+        - mountPath: /workspace/proc
+          name: proc-volume
           # When deploying MLX on OpenShift, readOnly SCC may be required for mlx-ui.
       volumes:
       - name: dashboard-admin
@@ -78,6 +80,8 @@ spec:
             path: admin.json
           secretName: mlx-dashboard-admin
       - name: build-volume
+        emptyDir: {}
+      - name: proc-volume
         emptyDir: {}
       serviceAccountName: mlx-ui
 ---
