@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# Istio
+- ../dist/stacks/ibm/application/istio-1-11
+# Kubeflow namespace (required)
+- ../dist/stacks/ibm/application/kubeflow-namespace-no-auth
+# Kubeflow Roles (required)
+- ../dist/stacks/ibm/application/kubeflow-roles
+# Kubeflow istio resource (required)
+- ../dist/stacks/ibm/application/kubeflow-istio-resources
+
+
+# Kubeflow Pipelines with Tekton
+- ../dist/stacks/ibm/application/kfp-tekton-no-auth
+# Datashim
+- ../contrib/datashim/kind
+# MLX
+- ../contrib/mlx/mlx-standalone
+# Openshift SCC
+- ../dist/stacks/ibm/application/openshift/openshift-scc
