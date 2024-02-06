@@ -249,7 +249,7 @@ You can also learn [how to use App ID](https://cloud.ibm.com/docs/appid?topic=ap
    kubectl delete pod -l app=authservice -n istio-system
    ```
 
-### Verify mutli-user installation
+### Verify multi-user installation
 
 Check the pod `authservice-0` is in running state in namespace `istio-system`:
 
