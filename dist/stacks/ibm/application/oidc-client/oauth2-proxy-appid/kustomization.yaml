@@ -1,0 +1,62 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../../../common/oidc-client/oauth2-proxy/overlays/m2m-self-signed
+commonLabels:
+  app.kubernetes.io/component: oidc-authservice
+  app.kubernetes.io/name: oidc-authservice
+
+
+configMapGenerator:
+- name: oauth2-proxy-parameters
+  behavior: merge
+  literals:
+  - FORCE_HTTPS=true
+  - ENABLE_M2M_TOKENS=true
+  - EXTRA_JWT_ISSUERS=https://kubernetes.default.svc=https://kubernetes.default.svc
+
+secretGenerator:
+- name: oauth2-proxy
+  behavior: replace
+  type: Opaque
+  literals:
+  - client-id=<CLIENT_ID>
+  - client-secret=<CLIENT_SECRET>
+  - cookie-secret=7d16fee92f8d11b8940b081b3f8b8acb
+
+patches:
+- path: oauth2-proxy-configmap.yaml
+  target:
+    kind: ConfigMap
+    name: oauth2-proxy
+- patch: |-
+    - op: replace
+      path: /spec/jwtRules/0/issuer
+      value: https://kubernetes.default.svc
+  target:
+    kind: RequestAuthentication
+    name: m2m-token-issuer
+- patch: |-
+    - op: replace
+      path: /spec/jwtRules/0/issuer
+      value: <OAuthServerUrl>
+  target:
+    kind: RequestAuthentication
+    name: dex-jwt
+- patch: |-
+    - op: replace
+      path: /data/M2M_TOKEN_ISSUER
+      value: https://kubernetes.default.svc
+  target:
+    kind: ConfigMap
+    name: istio-m2m-params
+- patch: |-
+    - op: replace
+      path: /metadata/name
+      value: appid-jwt
+  target:
+    kind: RequestAuthentication
+    name: dex-jwt
+  options:
+    allowNameChange: true

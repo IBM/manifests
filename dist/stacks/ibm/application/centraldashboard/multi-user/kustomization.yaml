@@ -2,6 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../../../../../apps/centraldashboard/upstream/overlays/istio
+
+components:
+- ../../../../../../common/oidc-client/oauth2-proxy/components/central-dashboard
+
 configMapGenerator:
 - envs:
   - params.env
@@ -9,3 +13,18 @@ configMapGenerator:
   behavior: merge
 patchesStrategicMerge:
 - iks-config.yaml
+
+replacements:
+- source:
+    fieldPath: data.CD_REGISTRATION_FLOW
+    kind: ConfigMap
+    name: centraldashboard-parameters
+    version: v1
+  targets:
+  - fieldPaths:
+    - spec.template.spec.containers.0.env.4.value
+    select:
+      group: apps
+      kind: Deployment
+      name: centraldashboard
+      version: v1

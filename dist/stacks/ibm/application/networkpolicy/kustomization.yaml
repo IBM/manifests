@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../../../../common/networkpolicies/base
+
+patches:
+- patch: |-
+    - op: add
+      path: /spec/ingress/0/from/0/namespaceSelector/matchExpressions/0/values/1
+      value: tekton-pipelines
+  target:
+    group: networking.k8s.io
+    version: v1
+    kind: NetworkPolicy
+    name: metadata-grpc-server
+- patch: |-
+    - op: add
+      path: /spec/ingress/0/from/0/namespaceSelector/matchExpressions/0/values/1
+      value: tekton-pipelines
+  target:
+    group: networking.k8s.io
+    version: v1
+    kind: NetworkPolicy
+    name: ml-pipeline

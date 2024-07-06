@@ -20,11 +20,12 @@ rules:
   - list
   - watch
 - apiGroups:
-  - ''
+  - pipelines.kubeflow.org
   resources:
-  - namespaces
+  - scheduledworkflows
+  - workflows
   verbs:
-  - get
+  - report
 - apiGroups:
   - pipelines.kubeflow.org
   resources:
@@ -40,6 +41,7 @@ rules:
   - taskruns
   - conditions
   - runs
+  - tasks
   verbs:
   - create
   - get
@@ -48,3 +50,10 @@ rules:
   - update
   - patch
   - delete
+- apiGroups:
+    - pipelines.kubeflow.org
+  resources:
+    - runs
+  verbs:
+    - reportMetrics
+    - readArtifact

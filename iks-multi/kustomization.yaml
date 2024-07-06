@@ -1,16 +1,50 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
+sortOptions:
+  order: legacy
+  legacySortOptions:
+    orderFirst:
+    - Namespace
+    - ResourceQuota
+    - StorageClass
+    - CustomResourceDefinition
+    - MutatingWebhookConfiguration
+    - ServiceAccount
+    - PodSecurityPolicy
+    - NetworkPolicy
+    - Role
+    - ClusterRole
+    - RoleBinding
+    - ClusterRoleBinding
+    - ConfigMap
+    - Secret
+    - Endpoints
+    - Service
+    - LimitRange
+    - PriorityClass
+    - PersistentVolume
+    - PersistentVolumeClaim
+    - Deployment
+    - StatefulSet
+    - CronJob
+    - PodDisruptionBudget
+    orderLast:
+    - ValidatingWebhookConfiguration
+
 resources:
 # Cert-Manager (required)
 - ../dist/stacks/ibm/application/cert-manager
 # Istio (requires)
 - ../dist/stacks/ibm/application/istio
 # OIDC Authservice (required)
-- ../dist/stacks/ibm/application/oidc-authservice-appid
+- ../dist/stacks/ibm/application/oidc-client/oauth2-proxy-appid
 # Knative
 - ../dist/stacks/ibm/application/knative
 # Kubeflow namespace (required)
 - ../dist/stacks/ibm/application/kubeflow-namespace
+# NetworkPolicies
+- ../dist/stacks/ibm/application/networkpolicy
 # Kubeflow Roles (required)
 - ../dist/stacks/ibm/application/kubeflow-roles
 # Kubeflow istio resource (required)
@@ -33,6 +67,8 @@ resources:
 - ../dist/stacks/ibm/application/notebook-controller
 # Jupyter Web App
 - ../dist/stacks/ibm/application/jupyter-web-app/insecure
+# PVC Viewer
+- ../dist/stacks/ibm/application/pvcviewer-controller
 # Volumes Web App
 - ../dist/stacks/ibm/application/volumes-web-app/insecure
 # Tensorboards Web App
@@ -41,33 +77,3 @@ resources:
 -  ../dist/stacks/ibm/application/tensorboard-controller
 # Training Operator
 - ../dist/stacks/ibm/application/training-operator
-
-sortOptions:
-  order: legacy
-  legacySortOptions:
-    orderFirst:
-    - Namespace
-    - ResourceQuota
-    - StorageClass
-    - CustomResourceDefinition
-    - MutatingWebhookConfiguration
-    - ServiceAccount
-    - PodSecurityPolicy
-    - Role
-    - ClusterRole
-    - RoleBinding
-    - ClusterRoleBinding
-    - ConfigMap
-    - Secret
-    - Endpoints
-    - Service
-    - LimitRange
-    - PriorityClass
-    - PersistentVolume
-    - PersistentVolumeClaim
-    - Deployment
-    - StatefulSet
-    - CronJob
-    - PodDisruptionBudget
-    orderLast:
-    - ValidatingWebhookConfiguration
