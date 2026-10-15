@@ -4,6 +4,9 @@ on:
     paths:
       - common/istio-cni-1-17/**
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

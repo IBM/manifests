@@ -7,6 +7,9 @@ on:
       - tests/gh-actions/install_istio.sh
       - common/cert-manager/**
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
