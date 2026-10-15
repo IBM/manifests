@@ -6,6 +6,9 @@ on:
       - tests/gh-actions/kind-cluster.yaml
       - tests/gh-actions/install_istio.sh
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -5,6 +5,9 @@ on:
       - contrib/kserve/**
       - common/knative/**
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

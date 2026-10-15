@@ -1,10 +1,13 @@
-# Define a GitHub action workflow to determine whether issues 
+# Define a GitHub action workflow to determine whether issues
 # should be added or removed from the Needs Triage Kanban board.
 name: Check Triage Status of Issue
 on:
   issues:
     types: [opened, closed, reopened, transferred, labeled, unlabeled]
     # Issue is created, Issue is closed, Issue added or removed from projects, Labels added/removed
+
+permissions:
+  contents: read
 
 jobs:
   test:
